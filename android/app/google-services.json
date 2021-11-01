@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "124713522875",
+    "project_id": "chatim-37aa9",
+    "storage_bucket": "chatim-37aa9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124713522875:android:71ca1538608d6dc98f7b9e",
+        "android_client_info": {
+          "package_name": "com.example.chatim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124713522875-oa750lscl7k5u4n4n1p9k7i4pj7a6lie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatim",
+            "certificate_hash": "6390d6447fc60d013a217d363fe2496cfe37e8aa"
+          }
+        },
+        {
+          "client_id": "124713522875-4m0dejdovggfq6epmsqvepphk1okruhj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlDztAzBwmONMRBl3WKWWFcZYdEewR3xE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124713522875-4m0dejdovggfq6epmsqvepphk1okruhj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
