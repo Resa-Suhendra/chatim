@@ -3,6 +3,8 @@ import 'package:chatim/services/contact_service.dart';
 import 'package:chatim/ui/register_page.dart';
 import 'package:flutter/material.dart';
 
+import 'contact_page.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -23,7 +25,15 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 20),
             Text("Email Akun aktif : "),
             SizedBox(height: 40),
-            ElevatedButton(onPressed: _addContact, child: Text("Tambah Kontak"))
+            ElevatedButton(
+                onPressed: _addContact, child: Text("Tambah Kontak")),
+            SizedBox(height: 20),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ContactPage()));
+                },
+                child: Text("Lihat Kontak"))
           ],
         ),
       ),
@@ -31,6 +41,7 @@ class HomePage extends StatelessWidget {
   }
 
   void _addContact() {
-    ContactService.addContact("diki@xeranta.com", "4HwIh1k3egflwVE94dAcSg7OCUa2");
+    ContactService.addContact(
+        "diki@xeranta.com", "4HwIh1k3egflwVE94dAcSg7OCUa2");
   }
 }

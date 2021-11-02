@@ -29,9 +29,13 @@ class ContactService {
     }
   }
 
-  static Future<List<PersonModel>?> contactList(String uid) async {
-    final data = _personCollection.doc(uid).collection('contact').snapshots();
+  static Stream<QuerySnapshot<Map<String, dynamic>>> contactList(String uid) async* {
+    try {
+      final data = _personCollection.doc(uid).collection('contact').snapshots();
 
-
+      yield* data;
+    } catch (e) {
+      print(e);
+    }
   }
 }
