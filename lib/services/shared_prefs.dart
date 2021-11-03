@@ -36,7 +36,7 @@ class Shared {
 
   static Future<bool> getLoginStatus() async {
     _pref = await SharedPreferences.getInstance();
-    final bool status = _pref.getBool(_isLogin)!;
+    final bool status = _pref.getBool(_isLogin) ?? false;
     return status;
   }
 }
