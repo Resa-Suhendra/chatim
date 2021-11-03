@@ -1,4 +1,5 @@
 import 'package:chatim/services/contact_service.dart';
+import 'package:chatim/ui/widgets/contact_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -24,14 +25,8 @@ class ContactPage extends StatelessWidget {
             }
 
             return ListView(
-              children: snapshot.data!.docs.map((document) {
-                return Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: MediaQuery.of(context).size.height / 6,
-                    child: Text("Name: " + document['name']),
-                  ),
-                );
+              children: snapshot.data!.docs.map((doc) {
+                return ContactTile(email: doc['email'], name: doc['name']);
               }).toList(),
             );
           },

@@ -22,8 +22,8 @@ class RoomModel {
     required this.lastDateTime,
   });
 
-  RoomModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
+  RoomModel.fromJson(Map<String, dynamic>? json) {
+    email = json!['email'];
     name = json['name'];
     photo = json['photo'];
     uid = json['uid'];

@@ -1,13 +1,23 @@
-import 'package:chatim/models/room_model.dart';
 import 'package:flutter/material.dart';
 
-class RoomTile extends StatelessWidget {
-  final RoomModel room;
-  const RoomTile({Key? key, required this.room}) : super(key: key);
+import '../chat_page.dart';
+
+class ContactTile extends StatelessWidget {
+  final String email;
+  final String name;
+  const ContactTile({
+    Key? key,
+    required this.email,
+    required this.name,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ChatPage()));
+      },
       contentPadding: const EdgeInsets.all(5),
       tileColor: Colors.green[100],
       leading: const CircleAvatar(
@@ -17,7 +27,7 @@ class RoomTile extends StatelessWidget {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(room.name ?? ''),
+          Text(name),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -27,17 +37,13 @@ class RoomTile extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  room.lastChat ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: Text(email),
               ),
             ],
           )
         ],
       ),
-      trailing: Text("19.22"),
+      trailing: Icon(Icons.chat),
     );
   }
 }

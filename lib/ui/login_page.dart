@@ -1,4 +1,5 @@
 import 'package:chatim/services/auth_service.dart';
+import 'package:chatim/services/shared_prefs.dart';
 import 'package:chatim/ui/home_page.dart';
 import 'package:chatim/ui/register_page.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,9 @@ class LoginPage extends StatelessWidget {
         if (data.personModel != null) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => HomePage()));
+
+          Shared.savePersonSession(data.personModel!);
+          Shared.setLoginSession(true);
         } else {}
       },
       child: Text("Login"),

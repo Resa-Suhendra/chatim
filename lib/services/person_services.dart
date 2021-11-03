@@ -1,5 +1,4 @@
 import 'package:chatim/models/person_model.dart';
-import 'package:chatim/models/room_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PersonServices {

@@ -1,6 +1,7 @@
 import 'package:chatim/services/auth_service.dart';
 import 'package:chatim/services/contact_service.dart';
 import 'package:chatim/ui/register_page.dart';
+import 'package:chatim/ui/room_chat.dart';
 import 'package:flutter/material.dart';
 
 import 'contact_page.dart';
@@ -33,7 +34,15 @@ class HomePage extends StatelessWidget {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => ContactPage()));
                 },
-                child: Text("Lihat Kontak"))
+                child: Text("Lihat Kontak")),
+
+            SizedBox(height: 20),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => RoomChatPage()));
+                },
+                child: Text("Room Chat"))
           ],
         ),
       ),
