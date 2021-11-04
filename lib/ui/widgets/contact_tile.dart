@@ -1,14 +1,13 @@
+import 'package:chatim/models/person_model.dart';
 import 'package:flutter/material.dart';
 
 import '../chat_page.dart';
 
 class ContactTile extends StatelessWidget {
-  final String email;
-  final String name;
+  final PersonModel person;
   const ContactTile({
     Key? key,
-    required this.email,
-    required this.name,
+    required this.person,
   }) : super(key: key);
 
   @override
@@ -16,7 +15,7 @@ class ContactTile extends StatelessWidget {
     return ListTile(
       onTap: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ChatPage()));
+            .push(MaterialPageRoute(builder: (context) => ChatPage(receiver: person,)));
       },
       contentPadding: const EdgeInsets.all(5),
       tileColor: Colors.green[100],
@@ -27,7 +26,7 @@ class ContactTile extends StatelessWidget {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(name),
+          Text(person.name ?? "No Name"),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -37,7 +36,7 @@ class ContactTile extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text(email),
+                child: Text(person.email ?? ''),
               ),
             ],
           )

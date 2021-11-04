@@ -27,10 +27,10 @@ class MessageService {
   // }
 
   static Future<void> sendMessage(
-      MessageModel message, String personUid) async {
+      MessageModel message, PersonModel sender, PersonModel receiver) async {
     try {
       final data = await _personCollection
-          .doc(personUid)
+          .doc(sender.uid)
           .collection('room')
           .doc(message.uidReceiver)
           .collection('chat')
@@ -40,22 +40,21 @@ class MessageService {
                 _personCollection
                     .doc(message.uidReceiver)
                     .collection('room')
-                    .doc(personUid)
+                    .doc(sender.uid)
                     .collection('chat')
                     .doc(message.dateTime!.toIso8601String())
                     .set(message.toJson())
               });
 
-      final PersonModel person = await PersonServices.getPerson(message.uidReceiver!);
 
       _personCollection
-          .doc(personUid)
+          .doc(sender.uid)
           .collection('room')
-          .doc(message.uidReceiver)
+          .doc(receiver.uid)
           .set(RoomModel(
-                  email: person.email,
-                  name: person.name,
-                  uid: person.uid,
+                  email: receiver.email,
+                  name: receiver.name,
+                  uid: receiver.uid,
                   type: message.type,
                   lastChat: message.message,
                   lastUid: message.uidSender,
@@ -64,13 +63,13 @@ class MessageService {
               .toJson());
 
       _personCollection
-          .doc(message.uidReceiver)
+          .doc(receiver.uid)
           .collection('room')
-          .doc(personUid)
+          .doc(sender.uid)
           .set(RoomModel(
-                  email: 'resa@xeranta.com',
-                  name: "Resa",
-                  uid: personUid,
+                  email: sender.email,
+                  name: sender.name,
+                  uid: sender.uid,
                   type: message.type,
                   lastChat: message.message,
                   lastUid: message.uidSender,
@@ -104,12 +103,12 @@ class MessageService {
   // }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> messagesList(
-      String uid, String roomUid) async* {
+      String senderUid, String receiverUid) async* {
     try {
       final data = _personCollection
-          .doc(uid)
+          .doc(senderUid)
           .collection('room')
-          .doc(roomUid)
+          .doc(receiverUid)
           .collection('chat')
           .snapshots();
 

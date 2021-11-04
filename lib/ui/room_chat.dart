@@ -1,5 +1,7 @@
+import 'package:chatim/models/person_model.dart';
 import 'package:chatim/models/room_model.dart';
 import 'package:chatim/services/message_service.dart';
+import 'package:chatim/services/shared_prefs.dart';
 import 'package:chatim/ui/widgets/room_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,22 @@ class RoomChatPage extends StatefulWidget {
 }
 
 class _RoomChatPageState extends State<RoomChatPage> {
+  PersonModel? person;
+
+  @override
+  void initState() {
+    super.initState();
+    setSession();
+  }
+
+  setSession() async {
+    var p = await Shared.getPersonFromSession();
+
+    setState(() {
+      person = p;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -29,7 +47,7 @@ class _RoomChatPageState extends State<RoomChatPage> {
       floatingActionButton: contactButton,
       body: Container(
         child: StreamBuilder(
-          stream: MessageService.roomList("4HwIh1k3egflwVE94dAcSg7OCUa2"),
+          stream: MessageService.roomList(person!.uid!),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -47,17 +65,22 @@ class _RoomChatPageState extends State<RoomChatPage> {
                 return ListView(
                   children: snapshot.data!.docs
                       .map((doc) => RoomTile(
-                            room: RoomModel.fromJson({
-                              'email': doc['email'],
-                              'name': doc['name'],
-                              'photo': doc['photo'],
-                              'uid': doc['uid'],
-                              'type': doc['type'],
-                              'lastChat': doc['lastChat'],
-                              'lastUid': doc['lastUid'],
-                              'inRoom': doc['inRoom'],
-                              'lastDateTime': doc['lastDateTime'].toString()
-                            }),
+                            isSender: doc['lastUid']
+                                .toString()
+                                .contains(person!.uid!),
+                            room: RoomModel.fromJson(
+                              {
+                                'email': doc['email'],
+                                'name': doc['name'],
+                                'photo': doc['photo'],
+                                'uid': doc['uid'],
+                                'type': doc['type'],
+                                'lastChat': doc['lastChat'],
+                                'lastUid': doc['lastUid'],
+                                'inRoom': doc['inRoom'],
+                                'lastDateTime': doc['lastDateTime'].toString()
+                              },
+                            ),
                           ))
                       .toList(),
                 );

@@ -39,4 +39,9 @@ class Shared {
     final bool status = _pref.getBool(_isLogin) ?? false;
     return status;
   }
+
+  static Future<void> clearPrefs() async {
+    _pref = await SharedPreferences.getInstance();
+    await _pref.clear();
+  }
 }

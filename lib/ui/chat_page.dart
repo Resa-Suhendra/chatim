@@ -1,24 +1,48 @@
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:chatim/models/message_model.dart';
+import 'package:chatim/models/person_model.dart';
 import 'package:chatim/services/message_service.dart';
+import 'package:chatim/services/shared_prefs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  final PersonModel receiver;
+
+  const ChatPage({Key? key, required this.receiver}) : super(key: key);
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  _ChatPageState createState() => _ChatPageState(receiver);
 }
 
 class _ChatPageState extends State<ChatPage> {
+  final PersonModel receiver;
+
+  _ChatPageState(this.receiver);
+
   final TextEditingController _messageController = TextEditingController();
   ScrollController scroll = ScrollController();
+
+  PersonModel? sender;
+
+  @override
+  void initState() {
+    super.initState();
+    setSession();
+  }
+
+  setSession() async {
+    var s = await Shared.getPersonFromSession();
+
+    setState(() {
+      sender = s;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     AppBar appbar = AppBar(
-      title: const Text("Chat Page"),
+      title: Text(receiver.name ?? "No Name"),
     );
 
     Widget messageField = Flexible(
@@ -60,12 +84,11 @@ class _ChatPageState extends State<ChatPage> {
                     MessageModel mess = MessageModel(
                       dateTime: DateTime.now(),
                       type: 'text',
-                      uidSender: "4HwIh1k3egflwVE94dAcSg7OCUa2",
-                      uidReceiver: "ube6jwRGArYVkKANYyKjhM6O7P43",
+                      uidSender: sender!.uid,
+                      uidReceiver: receiver.uid,
                       message: _messageController.text,
                     );
-                    MessageService.sendMessage(
-                        mess, "4HwIh1k3egflwVE94dAcSg7OCUa2");
+                    MessageService.sendMessage(mess, sender!, receiver);
                     _messageController.clear();
                     scroll.jumpTo(scroll.position.maxScrollExtent);
                   },
@@ -77,8 +100,7 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     Widget chats = StreamBuilder(
-      stream: MessageService.messagesList(
-          "4HwIh1k3egflwVE94dAcSg7OCUa2", "ube6jwRGArYVkKANYyKjhM6O7P43"),
+      stream: MessageService.messagesList(sender!.uid!, receiver.uid!),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -92,13 +114,14 @@ class _ChatPageState extends State<ChatPage> {
               controller: scroll,
               children: snapshot.data!.docs
                   .map((doc) => BubbleNormal(
-                        text: doc['message'],
-                        tail: true,
-                        isSender:
-                            doc['uidSender'] == "4HwIh1k3egflwVE94dAcSg7OCUa2"
-                                ? true
-                                : false,
-                      ))
+                      text: doc['message'],
+                      color: doc['uidSender'].toString().contains("${sender!.uid}")
+                          ? Colors.green
+                          : Colors.white,
+                      tail: false,
+                      isSender: doc['uidSender'].toString().contains("${sender!.uid}")
+                          ? true
+                          : false))
                   .toList(),
             );
           }
