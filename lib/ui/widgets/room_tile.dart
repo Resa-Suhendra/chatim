@@ -15,7 +15,6 @@ class RoomTile extends StatelessWidget {
     String time = '';
     String minute = DateFormat('H.m').format(room.lastDateTime!);
     String date = DateFormat('dd/MM/yy').format(room.lastDateTime!);
-    String now = DateFormat('dd/MM/yy').format(DateTime.now());
     String tgl = DateFormat('yyyy-MM-dd').format(room.lastDateTime!);
     String skr = DateFormat('yyyy-MM-dd').format(DateTime.now());
     DateTime a = DateTime.parse(skr);

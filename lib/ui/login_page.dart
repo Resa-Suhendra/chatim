@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
 
         if (data.personModel != null) {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => HomePage()));
+              .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
 
           Shared.savePersonSession(data.personModel!);
           Shared.setLoginSession(true);
